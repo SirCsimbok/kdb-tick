@@ -63,7 +63,7 @@ if[system"t";
 
 if[not system"t";system"t 1000";
  .z.ts:{ts .z.D};
- upd:{[t;x]ts"d"$a:.z.P; show t; show x;
+ upd:{[t;x]ts"d"$a:.z.P;
  if[not -16=type first first x;a:"n"$a;x:$[0>type first x;a,x;(enlist(count first x)#a),x]];
  f:key flip value t;pub[t;$[0>type first x;enlist f!x;flip f!x]];if[l;l enlist (`upd;t;x);i+:1];}];
 
@@ -89,3 +89,4 @@ if[not system"t";system"t 1000";
 >q tick/rdb.q :5010 -p 5011	/rdb
 >q sym            -p 5012	/hdb
 >q tick/feedSim.q schema :5010		/feed
+>q tick/rte.q :5010 -p 5013	/rte
