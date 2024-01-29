@@ -1,3 +1,12 @@
+// Tickerplant (Note: You can use tick.q and u.q from the attached github repo)
+// Create a file tick.q which starts up a Tickerplant process on a free port.
+// This TP process should load schema.q.
+// The process should load in u.q (utility functions). u.q can be found in the shared github repo above for reference.
+// Ensure that .u.upd is defined as this will allow messages to be sent to our TP process​​​​​​​.
+// The Tickerplant should log every incoming message into a binary log file.
+// Detect when end of day (EOD) has occurred and call an appropriate function on subscribed processes to save in memory data to disk.
+
+
 / q tick.q sym . -p 5001 </dev/null >foo 2>&1 &
 /2014.03.12 remove license check
 /2013.09.05 warn on corrupt log
@@ -26,8 +35,22 @@ if[not system"p";system"p 5010"]
 
 \l tick/u.q
 \d .u
-ld:{if[not type key L::`$(-10_string L),string x;.[L;();:;()]];i::j::-11!(-2;L);if[0<=type i;-2 (string L)," is a corrupt log. Truncate to length ",(string last i)," and restart";exit 1];hopen L};
-tick:{init[];if[not min(`time`sym~2#key flip value@)each t;'`timesym];@[;`sym;`g#]each t;d::.z.D;if[l::count y;L::`$":",y,"/",x,10#".";l::ld d]};
+
+
+ld:{
+    if[not type key L::`$(-10_string L),string x;.[L;();:;()]];
+    i::j::-11!(-2;L);
+    if[0<=type i;-2 (string L)," is a corrupt log. Truncate to length ",(string last i)," and restart";exit 1];
+    hopen L
+    };
+
+
+tick:{init[];
+    if[not min(`time`sym~2#key flip value@)each t;'`timesym];
+    @[;`sym;`g#]each t;
+    d::.z.D;
+    if[l::count y;L::`$":",y,"/",x,10#".";l::ld d]
+    };
 
 endofday:{end d;d+:1;if[l;hclose l;l::0(`.u.ld;d)]};
 ts:{if[d<x;if[d<x-1;system"t 0";'"more than one day?"];endofday[]]};
