@@ -29,7 +29,7 @@
 "kdb+tick 2.8 2014.03.12"
 
 /q tick.q SRC [DST] [-p 5010] [-o h]
-system"l tick/",(src:first .z.x,enlist"sym"),".q"
+system"l tick/",(src:first .z.x,enlist"schema"),".q"
 
 if[not system"p";system"p 5010"]
 
@@ -63,7 +63,7 @@ if[system"t";
 
 if[not system"t";system"t 1000";
  .z.ts:{ts .z.D};
- upd:{[t;x]ts"d"$a:.z.P;
+ upd:{[t;x]ts"d"$a:.z.P; show t; show x;
  if[not -16=type first first x;a:"n"$a;x:$[0>type first x;a,x;(enlist(count first x)#a),x]];
  f:key flip value t;pub[t;$[0>type first x;enlist f!x;flip f!x]];if[l;l enlist (`upd;t;x);i+:1];}];
 
@@ -85,7 +85,7 @@ if[not system"t";system"t 1000";
 >q tick/ssl.q
 
 /run
->q tick.q sym  .  -p 5010	/tick
->q tick/r.q :5010 -p 5011	/rdb
+>q tick.q schema  .  -p 5010	/tick
+>q tick/rdb.q :5010 -p 5011	/rdb
 >q sym            -p 5012	/hdb
->q tick/ssl.q sym :5010		/feed
+>q tick/feedSim.q schema :5010		/feed
