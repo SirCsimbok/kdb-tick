@@ -19,9 +19,10 @@ upd:insert; /insert or upsert?
 .u.rep:{
     (.[;();:;].)each x;
     if[null first y;:()];
-    -11!y;system "cd ",1_-10_string first reverse y
+    // -11!y;system "cd ",(0N!)1_-10_string first reverse y
+    -11!y;system "cd hdb"
     };
 / HARDCODE \cd if other than logdir/db
 
 / connect to ticker plant for (schema;(logcount;log))
-.u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
+.u.rep .(0N!)(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
